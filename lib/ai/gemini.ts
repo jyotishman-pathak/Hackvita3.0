@@ -55,7 +55,7 @@ export const AisummarizeCommit = async (diff: string) => {
   }
 };
 
-// Example usage
+
 test();
 async function test() {
   console.log(
@@ -68,3 +68,33 @@ async function test() {
     `)
   );
 }
+
+
+
+
+
+async function analyzeCode(code: string) {
+    // Step 1: Retrieve relevant context
+    const relevantDocs = await collection.query({
+      queryTexts: [code],
+      nResults: 3 // Get top 3 relevant documents
+    });
+  
+    // Step 2: Build enhanced prompt
+    const ragContext = relevantDocs.documents[0].join("\n---\n");
+    
+    const prompt = `
+      Analyze this code for issues using these guidelines:
+      ${ragContext}
+  
+      Code:
+      ${code}
+  
+      Format response as JSON with: 
+      { issues: { type: string, description: string, line: number, references: string[] }[] }
+    `;
+  
+    // Step 3: Generate with Gemini
+    const result = await model.generateContent(prompt);
+    return parseResponse(result);
+  }

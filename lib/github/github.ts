@@ -14,7 +14,7 @@ async function summariseCommit(githubUrl: string, commitHash : string){
             Accept:'application/vnd.github.v3.diff'
         }
     })
-    return await AisummarizeCommit(data)
+    return await AisummarizeCommit(data) ||" "
 }
 
 
@@ -44,7 +44,7 @@ export const getCommitHashes = async ( githubUrl: string): Promise<Response[]>=>
     })) 
 }
 
-console.log(await getCommitHashes(githubUrl))
+
 
 
 

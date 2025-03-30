@@ -1,9 +1,14 @@
+"use client"
 import React, { ReactNode } from 'react'
 import { ThemeProvider } from './theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const Provider = ({children}:{children: ReactNode}) => {
+
+  const queryClient = new QueryClient({})
   return (
+    <QueryClientProvider client={queryClient}>
     <ClerkProvider>
 
  
@@ -16,7 +21,7 @@ const Provider = ({children}:{children: ReactNode}) => {
             {children}
           </ThemeProvider>
           </ClerkProvider>
-
+</QueryClientProvider>
   )
 }
 
